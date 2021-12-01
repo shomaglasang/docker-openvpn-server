@@ -15,6 +15,21 @@ init_files() {
     touch ./ovpn-data/openvpn-status.log
     chmod 644 ./ovpn-data/openvpn-status.log
   fi
+
+  if [ ! -d "./ovpn-data/ccd" ]; then
+    echo "Creating openvpn ccd folder"
+    sudo mkdir -p ./ovpn-data/ccd
+  fi
+
+  if [ ! -d "./ovpn-data/client/configs/users" ]; then
+    echo "Creating openvpn client users folder"
+    sudo mkdir -p ./ovpn-data/client/configs/users
+  fi
+
+  if [ ! -d "./ovpn-data/client/configs/devices" ]; then
+    echo "Creating openvpn client devices folder"
+    sudo mkdir -p ./ovpn-data/client/configs/devices/
+  fi
 }
 
 init_db () {
