@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/local/bin/php
 <?php
 
 /*
@@ -253,44 +253,6 @@ function parse_args()
 
 
 /*
- * Get customer info.
- */
-function get_customer_info($customer_name)
-{
-  global $options;
-
-  $ovpn_dir = '/etc/openvpn-' . $customer_name;
-  if (!is_dir($ovpn_dir))
-  {
-    if ($options['verbose'])
-    {
-      do_log("- VPN directory ($ovpn_dir) not found!", LOG_ALL);
-    }
-
-    return(null);
-  }
-
-  $ca_dir = '/etc/easy-rsa-' . $customer_name;
-  if (!is_dir($ca_dir))
-  {
-    if ($options['verbose'])
-    {
-      do_log("- CA directory ($ovpn_dir) not found!", LOG_ALL);
-    }
-    
-    return(null);
-  }
-
-  $cb = array(
-    'ovpn_dir' => $ovpn_dir,
-    'ca_dir' => $ca_dir
-  );
-
-  return($cb);
-}
-
-
-/*
  * Check if client already exists.
  */
 function is_client_existing($name, $ccb)
@@ -329,7 +291,7 @@ function create_vpn_config($options, $ccb)
   do_log("- Generating client VPN configuration.", LOG_ALL);
 
   /* generete certificate request */
-  $cmd = 'cd ' . $ccb['ca_dir'] . ' && echo ' . $options['client_name'] . ' | ./easyrsa gen-req ' . $options['client_name'] . ' nopass > /dev/null 2>&1';
+  $cmd = 'cd ' . $ccb['ca_dir'] . ' && echo ' . $options['client_name'] . ' | /usr/share/easy-rsa/easyrsa gen-req ' . $options['client_name'] . ' nopass > /dev/null 2>&1';
   $output = null;
   $ret_val = null;
   $ret = exec($cmd, $output, $ret_val);
@@ -340,7 +302,7 @@ function create_vpn_config($options, $ccb)
   }
 
   /* sign certificate request */
-  $cmd = 'cd ' . $ccb['ca_dir'] . ' && echo yes  | ./easyrsa sign-req client ' . $options['client_name'] . ' > /dev/null 2>&1';
+  $cmd = 'cd ' . $ccb['ca_dir'] . ' && echo yes  | /usr/share/easy-rsa/easyrsa sign-req client ' . $options['client_name'] . ' > /dev/null 2>&1';
   $output = null;
   $ret_val = null;
   $ret = exec($cmd, $output, $ret_val);
@@ -372,7 +334,7 @@ function create_vpn_config($options, $ccb)
   fwrite($fd, "pull\n");
   fwrite($fd, "<ca>\n");
 
-  $ca_str = file_get_contents($ccb['ovpn_dir'] . '/ca.crt');
+  $ca_str = file_get_contents($ccb['ovpn_dir'] . '/pki/ca.crt');
   fwrite($fd, $ca_str);
 
   fwrite($fd, "</ca>\n");
@@ -394,7 +356,7 @@ function create_vpn_config($options, $ccb)
   fwrite($fd, "key-direction 1\n");
   fwrite($fd, "<tls-auth>\n");
 
-  $ta_str = file_get_contents($ccb['ovpn_dir'] . '/ta.key');
+  $ta_str = file_get_contents($ccb['ovpn_dir'] . '/pki/ta.key');
   fwrite($fd, $ta_str);
 
   fwrite($fd, "</tls-auth>\n");
@@ -1313,16 +1275,16 @@ $options = array(
   'verbose' => false,
   'dryrun' => false,
   'type' => 'device',
-  'customer_name' => null,
+  'customer_name' => getenv('CUSTOMER_NAME'),
   'client_name' => null,
   'client_description' => null,
   'overwrite' => false,
   'create_vpn_config' => true,
   'create_client_config' => true,
   'add_client_to_db' => true,
-  'server_ip' => '192.168.1.1',
-  'server_port' => '1194',
-  'db_ip' => 'localhost',
+  'server_ip' => getenv('VPNSERVER_PUBLIC_IP'),
+  'server_port' => getenv('VPNSERVER_PUBLIC_PORT'),
+  'db_ip' => 'mysql',
   'db_name' => 'vpn',
   'db_user' => 'vpnuser',
   'db_password' => 'vpnuser*pw123',

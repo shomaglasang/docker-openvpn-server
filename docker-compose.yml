@@ -19,6 +19,9 @@ services:
     - ./src/www:/www
     - ./src/scripts:/scripts
     - ./ovpn-data:/etc/openvpn
+    - ./src/easy-rsa:/usr/share/easy-rsa
+    env_file:
+    - .env
 
   mysql:
     image: mysql:5.7.22
@@ -48,6 +51,8 @@ services:
       - "11194:1194/udp"
     volumes:
     - ./ovpn-data:/etc/openvpn
+    env_file:
+    - .env
 
 volumes:
   mysqldata:
