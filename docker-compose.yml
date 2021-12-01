@@ -1,0 +1,54 @@
+version: "3.3"
+services:
+  web:
+    image: nginx:latest
+    container_name: web
+    ports:
+    - "8080:80"
+    volumes:
+    - ./src/www:/www
+    - ./conf/vpn.conf:/etc/nginx/conf.d/default.conf
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vpn/php
+    container_name: php
+    volumes:
+    - ./src/www:/www
+    - ./src/scripts:/scripts
+    - ./ovpn-data:/etc/openvpn
+
+  mysql:
+    image: mysql:5.7.22
+    container_name: mysql
+    restart: unless-stopped
+    ports:
+      - "13306:3306"
+    environment:
+      - MYSQL_DATABASE=vpn
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - SERVICE_TAGS=vpn
+      - SERVICE_NAME=mysql
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - mysqldata:/var/lib/mysql/
+      - ./conf/mysql.cnf:/etc/mysql/my.cnf
+
+  vpns:
+    image: kylemanna/openvpn
+    container_name: vpns
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    command: bash -c "/etc/openvpn/run_openvpn.sh"
+    ports:
+      - "11194:1194/udp"
+    volumes:
+    - ./ovpn-data:/etc/openvpn
+
+volumes:
+  mysqldata:
+    driver: local
