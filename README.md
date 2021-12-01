@@ -7,3 +7,5 @@ OpenVPN server in a Docker container complete with Web Interface/PHP, MySQL and 
       ./bs.sh start
   
 ## Settings  
+
+## Generate OpenVPN (.ovpn) for clients
