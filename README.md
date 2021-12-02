@@ -16,9 +16,21 @@ OpenVPN server in a Docker container complete with a Web Interface/PHP, MySQL an
 
       ./bs.sh start
   
-## Settings  
+## Settings
+
+|Settings| Default Value| Description|File|
+|--------|--------------|------------|----|
+|VPNSERVER_PUBLIC_IP | 192.168.1.1| OpenVPN Public IP address| .env|
+|VPNSERVER_PUBLIC_PORT| 11194| OpenVPN Public Port| .env|
+|services.web.ports|8080| Web/Nginx Public Port| docker-compose.yml|
+|CUSTOMER_NAME|Server1| Default Customer/Organization Name| hard-coded|
+|OpenVPN Server Network| 10.8.0.0/24| OpenVPN Server VPN network| ovpn-data/server.conf|
+|OpenVPN Client User Network|10.8.200.0/24| OpenVPN client user network address space| -u option of /scripts/gvcf|
+|OpenVPN Client Device Network| 10.8.1.0/24|OpenVPN client device network address space| -d option of /scripts/gvcf|
 
 ## Generate OpenVPN clients configuration file (.ovpn)
+
+There are 2 types of OpenVPN configuration files, user and device. A user configuration file is intended for end-users. This configuration file is installed to user computer or device. The device configuration file is intended for devices or network equipments such as routers, firewalls, servers, etc. Technically there are no differences between them. The distinction is for monitoring purposes. In the Web UI, online devices and users are listed separately. 
 
 * Generate .ovpn file for client-user with the name "johndoe"
 
