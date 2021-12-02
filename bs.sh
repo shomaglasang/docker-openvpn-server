@@ -33,7 +33,7 @@ init_files() {
 }
 
 init_db () {
-  docker-compose exec mysql mysql -u root -h localhost -P 3306 vpn -e "describe customers" > /dev/null
+  docker-compose exec mysql mysql -u root -h localhost vpn -e "describe customers" > /dev/null
   if [ $? -eq 0 ]; then
     echo "VPN tables already exists."
     return
@@ -129,7 +129,7 @@ start_apps () {
 
   $(use_sudo) docker-compose up -d
 
-  sleep 5
+  sleep 15
   init_db
   echo "Done."
 }
