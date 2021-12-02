@@ -1,5 +1,5 @@
 # OpenVPN Server and Web Interface for Docker
-OpenVPN server in a Docker container complete with Web Interface/PHP, MySQL and configuration generator script.
+OpenVPN server in a Docker container complete with a Web Interface/PHP, MySQL and ovpn config generator script.
 
 ## Quick Start
 * Edit the public IP and port of the OpenVPN server in the .env file.
