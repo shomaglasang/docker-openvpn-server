@@ -29,3 +29,8 @@ OpenVPN server in a Docker container complete with a Web Interface/PHP, MySQL an
 
       docker-compose exec php /scripts/gvcf.php -n edge28 -t device
   On success, the configuration file is located at ./ovpn-data/client/configs/devices/edge28.ovpn
+  
+
+## Todo
+* Add user authentication for web access
+* Setup/install SSL cert for the web server
