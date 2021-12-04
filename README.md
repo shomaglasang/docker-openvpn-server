@@ -15,6 +15,11 @@ OpenVPN server in a Docker container complete with a Web Interface/PHP, MySQL an
 * Bootstrap the containers from the bootstrap script. This sets up everything. It will prompt for the CA name. You should do this first before "docker-compose" or docker commands.
 
       ./bs.sh start
+      
+* Default web user credential
+
+      username: admin
+      password: admin*pw123
   
 ## Settings
 
@@ -82,5 +87,4 @@ There are 2 types of OpenVPN configuration files, user and device. A user config
       ifconfig-push 10.8.1.1 10.8.1.2
 
 ## Todo
-* Add user authentication for web access
 * Setup/install SSL cert for the web server
