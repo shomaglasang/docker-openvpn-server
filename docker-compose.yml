@@ -8,6 +8,7 @@ services:
     volumes:
     - ./src/www:/www
     - ./conf/vpn.conf:/etc/nginx/conf.d/default.conf
+    - ./conf/.htpasswd:/etc/nginx/.htpasswd
 
   php:
     build:
