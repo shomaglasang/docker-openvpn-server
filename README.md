@@ -88,3 +88,9 @@ There are 2 types of OpenVPN configuration files, user and device. A user config
 
 ## Todo
 * Setup/install SSL cert for the web server
+
+## Donation
+If this project helped you in any way, you can buy me a bottle of beer or a shot of whiskey :)
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=BXK736WX48DVL)
+
